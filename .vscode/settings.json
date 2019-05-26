@@ -1,0 +1,4 @@
+{
+    "go.gopath": "${env:HOME}/go:${workspaceFolder}/../gopilot-lib:${workspaceFolder}",
+    "cSpell.enabled": false
+}
