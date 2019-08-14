@@ -1,8 +1,8 @@
 
-deps:
-	GOPATH=${HOME}/go:${PWD}/gopilot-lib:${PWD}/gopilot \
-	go get -d -v ./src
+all: build
 
 build:
-	GOPATH=${HOME}/go:${PWD}/gopilot-lib:${PWD}/gopilot \
-	go build -o ../gpcli ./src
+	go build -o ./gpd
+
+clean:
+	rm ./gpd

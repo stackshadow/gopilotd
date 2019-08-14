@@ -19,7 +19,11 @@ along with gopilot.  If not, see <http://www.gnu.org/licenses/>.
 package gopilotd
 
 import (
-	"gopilot/gbus"
+	"gitlab.com/gopilot/lib/gbus"
 )
 
-var Bus gbus.Socketbus
+// MessageBus is our internale messagebus
+var MessageBus gbus.GBus
+
+// Sockets provide the socket-server for all plugins
+var Sockets *gbus.SocketConnection

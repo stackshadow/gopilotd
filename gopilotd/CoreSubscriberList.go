@@ -19,24 +19,33 @@ along with gopilot.  If not, see <http://www.gnu.org/licenses/>.
 package gopilotd
 
 import (
-	"gopilot/gbus"
-	"gopilot/nodeName"
+	"encoding/json"
+
+	"gitlab.com/gopilot/lib/gbus"
+	"gitlab.com/gopilot/lib/mynodename"
 )
 
 // Init the info-modules
-func Init() {
+func onSubscriberListGet(message *gbus.Msg, group, command, payload string) {
+	if command != "subscriberListGet" {
+		return
+	}
 
-	Bus.Subscribe("", mynodename.NodeName, "core", func(message *gbus.Msg, group, command, payload string) {
-		if command == "ping" {
-			Bus.PublishPayload(
-				mynodename.NodeName,
-				message.NodeSource,
-				"core",
-				message.GroupSource,
-				"pong",
-				"",
-			)
-		}
-	})
+	subscriberList := MessageBus.SubscriberListGet()
+	jsonStringSubscriberList, err := json.Marshal(subscriberList)
+	if err != nil {
+		MessageBus.PublishPayload(
+			mynodename.NodeName, message.NodeSource,
+			"core", message.GroupSource,
+			"error", err.Error(),
+		)
+		return
+	}
+
+	MessageBus.PublishPayload(
+		mynodename.NodeName, message.NodeSource,
+		"core", message.GroupSource,
+		"subscriberList", string(jsonStringSubscriberList),
+	)
 
 }

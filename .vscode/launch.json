@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "${workspaceFolder}/src/gopilot.go",
+            "program": "${workspaceFolder}/gopilot.go",
             "env": {
                 //                "GOPATH": "${env:HOME}/go:${workspaceFolder}/gopilot-lib:${workspaceFolder}/gopilot"
             },

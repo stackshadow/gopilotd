@@ -16,34 +16,26 @@ You should have received a copy of the GNU Lesser General Public License
 along with gopilot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package main
+package gopilotd
 
 import (
-	"flag"
-	"gopilot/clog"
-	"gopilot/config"
-	"gopilot/gbus"
-	"gopilot/nodeName"
-	"gopilotd"
+	"gitlab.com/gopilot/lib/gbus"
+	"gitlab.com/gopilot/lib/mynodename"
 )
 
-func main() {
+// Init the info-modules
+func onPing(message *gbus.Msg, group, command, payload string) {
+	if command != "ping" {
+		return
+	}
 
-	// ########################## Command line parse ##########################
-	// core stuff
-	clog.ParseCmdLine()
-	mynodename.ParseCmdLine()
-	config.ParseCmdLine()
-	flag.Parse()
-
-	// ########################## Init ##########################
-	clog.Init()
-	mynodename.Init()
-	config.Init()
-	config.Read()
-
-	gopilotd.Bus.Init()
-	gopilotd.Init()
-	gopilotd.Bus.Serve(gbus.SocketFileName)
+	MessageBus.PublishPayload(
+		mynodename.NodeName,
+		message.NodeSource,
+		"core",
+		message.GroupSource,
+		"pong",
+		"",
+	)
 
 }
